@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <title></title>
+    <style>
+      body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    user-select: none; /* Evitar seleção de texto */
+    cursor: default;
+}
+
+.sidebar {
+    width: 500px; /* Largura da nova barra lateral */
+    background: url('https://i.imgur.com/BWG0Tde.png') no-repeat center center / cover;
+    overflow-y: auto;
+    position: absolute;
+    right: -500px; /* Começa fora da tela à direita */
+    top: 0;
+    height: 100%;
+    transition: right 0.3s ease; /* Transição suave para mostrar/esconder a barra lateral */
+    z-index: 5; /* Ajuste para a sidebar 1 aparecer por cima da sidebar 2 */
+}
+
+.sidebar.show {
+    right: 0; /* Mostrar a barra lateral */
+}
+
+.sidebar-content {
+    color: #462313; /* Cor do texto branca */
+    text-align: left; /* Alinhar o texto à direita */
+    flex-direction: column;
+    padding: 15px; /* Adicionar algum padding para não encostar na borda */
+    font-family: 'Great Vibes', cursive;
+}
+
+.sidebar-content h2 {
+    text-align: center;
+    margin-left: 100px;
+    font-size: 3em;
+    margin-top: 20px;
+}
+
+.sidebar-content p {
+    margin-left: 100px;
+    word-wrap: break-word; /* Quebra a linha automaticamente ao atingir o limite do contêiner */
+    white-space: normal; /* Permite quebra de linha */
+    text-align: justify;
+    font-size: 1.5em;
+    position: relative;
+    top: -30px;
+}
+
+.container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    cursor: default;
+}
+
+.container:active {
+    cursor: default;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-origin: top left;
+    cursor: default;
+}
+
+.overlay-img {
+    position: absolute;
+    transition: transform 0.2s ease;
+    transform: translate(-50%, -50%);
+    cursor: pointer; /* Alterar o cursor para indicar que a imagem é clicável */
+    z-index: 1;
+}
+
+.overlay-img:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+#additionalImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4608px;
+    height: 2391px;
+    z-index: 2;
+    cursor: default;
+}
+
+#Galadorn,
+#Northuria,
+#Solaria,
+#Mirandor,
+#Redmont,
+#Durnor,
+#Vindengard,
+#Baraddur,
+#Ekrund,
+#Isengard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4608px;
+    height: 2391px;
+    z-index: 3;
+    cursor: default;
+    display: none;
+}
+
+#Nuvem {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4608px;
+    height: 2391px;
+    z-index: 3;
+    cursor: default;
+    z-index: 0;
+}
+
+#Nuvens {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4608px;
+    height: 2391px;
+    z-index: 3;
+    cursor: default;
+    z-index: 2;
+}
+
+.overlay2-img {
+    position: absolute;
+    transition: transform 0.2s ease;
+    transform: translate(-50%, -50%);
+    cursor: default; /* Alterar o cursor para indicar que a imagem é clicável */
+    z-index: 4;
+}
+
+.overlay2-img:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* Adicione esta parte para ocultar a barra lateral em dispositivos móveis */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none !important; /* Oculta a barra lateral em dispositivos móveis */
+    }
+}
+
+/* Adicione esta parte para criar uma nova classe para a barra lateral em dispositivos móveis */
+@media (max-width: 768px) {
+    .sidebar-mobile {
+        width: 100%; /* Largura total em dispositivos móveis */
+        height: 100vh;
+        background: url('https://i.imgur.com/BWG0Tde.png') no-repeat center center / cover;
+        overflow-y: auto;
+        position: fixed; /* Posição fixa em dispositivos móveis */
+        left: 0;
+        top: 0;
+        z-index: 5;
+        transition: left 0.3s ease; /* Transição suave para mostrar/esconder a barra lateral */
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="content" id="content">
+            <img src="https://i.imgur.com/9d7avcs.jpg" alt="Imagem">
+            <img class="overlay-img" src="https://i.imgur.com/uYQBZ2R.png" alt="Redmont" style="top: 320px; left: 2660px;" id="toggleSidebar1" width="100px" height="100px"> 
+            <img class="overlay-img" src="https://i.imgur.com/RH9UfVz.png" alt="Solaria" style="top: 1105px; left: 3366px;" id="toggleSidebar2" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/X1vZWIf.png" alt="Aldoria" style="top: 1075px; left: 2885px;" id="toggleSidebar3" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/wXW12jq.png" alt="Galadorn" style="top: 500px; left: 1010px;" id="toggleSidebar4" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/akuJRdt.png" alt="Durnor" style="top: 405px; left: 3295px;" id="toggleSidebar5" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/VpqpWSS.png" alt="Avalon" style="top: 790px; left: 2230px;" id="toggleSidebar6" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/OW0AbAo.png" alt="Arcadia" style="top: 445px; left: 2325px;" id="toggleSidebar7" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/CjWScwz.png" alt="Mirandor" style="top: 580px; left: 3630px;" id="toggleSidebar8" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/PNfnEqf.png" alt="Northuria" style="top: 1060px; left: 2140px;" id="toggleSidebar9" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/W1GwHQb.png" alt="Lothirion" style="top: 860px; left: 2930px;" id="toggleSidebar10" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/xSrEsvf.png" alt="Khazum" style="top: 450px; left: 2675px;" id="toggleSidebar11" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/VBcmPrs.png" alt="Zufbar" style="top: 545px; left: 3120px;" id="toggleSidebar12" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/VpqpWSS.png" alt="Ekrund" style="top: 510px; left: 1800px;" id="toggleSidebar13" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/PRpNPWg.png" alt="Baraddur" style="top: 1255px; left: 2430px;" id="toggleSidebar14" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/q5E9plH.png" alt="Isengard" style="top: 760px; left: 1870px;" id="toggleSidebar15" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/bG55sFB.png" alt="Vindengard" style="top: 1380px; left: 1210px;" id="toggleSidebar16" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/zg6nhXZ.png" alt="Sutengurr" style="top: 975px; left: 1345px;" id="toggleSidebar17" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/kZe6TKc.png" alt="Abismo" style="top: 1895px; left: 2465px;" id="toggleSidebar18" width="100px" height="100px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="trono" style="top: 815px; left: 1400px;" id="toggleSidebar19" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="torre" style="top: 2025px; left: 2080px;" id="toggleSidebar20" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="gelo" style="top: 255px; left: 2980px;" id="toggleSidebar21" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="forja" style="top: 1148px; left: 3246px;" id="toggleSidebar22" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="vulcao" style="top: 890px; left: 3340px;" id="toggleSidebar23" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Ponte" style="top: 1075px; left: 2685px;" id="toggleSidebar24" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Mina" style="top: 470px; left: 2505px;" id="toggleSidebar25" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Montanhas" style="top: 1755px; left: 3620px;" id="toggleSidebar26" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Arvore" style="top: 650px; left: 2855px;" id="toggleSidebar27" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Forte" style="top: 1325px; left: 3280px;" id="toggleSidebar28" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Torrinha" style="top: 1265px; left: 2020px;" id="toggleSidebar29" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Masmorra" style="top: 1320px; left: 2778px;" id="toggleSidebar30" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/DJa3ZMT.png" alt="Viking" style="top: 1620px; left: 1218px;" id="toggleSidebar31" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 645px; left: 900px;" id="toggleSidebar32" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 380px; left: 1075px;" id="toggleSidebar33" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 610px; left: 1300px;" id="toggleSidebar34" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 535px; left: 2070px;" id="toggleSidebar35" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 470px; left: 2435px;" id="toggleSidebar36" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 715px; left: 2090px;" id="toggleSidebar37" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 700px; left: 2589px;" id="toggleSidebar38" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 385px; left: 2980px;" id="toggleSidebar39" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 1166px; left: 2666px;" id="toggleSidebar40" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 535px; left: 2925px;" id="toggleSidebar41" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 554px; left: 3118px;" id="toggleSidebar42" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 1180px; left: 1890px;" id="toggleSidebar43" width="40px" height="40px">
+            <img class="overlay-img" src="https://i.imgur.com/y7VnAFh.png" alt="Vila" style="top: 1675px; left: 2700px;" id="toggleSidebar44" width="40px" height="40px">
+
+            <img id="additionalImage" src="https://i.imgur.com/V7Qzid7.jpeg" alt="Additional Image">
+            <img class="overlay2-img" src="https://i.imgur.com/r0Pq6jW.png" alt="Galadorn" style="top: 500px; left: 1000px;" width="100px" height="200px">
+            <img id="Galadorn" src="https://i.imgur.com/Bzxqq4P.png" alt="Galadorn Area">
+            <img class="overlay2-img" src="https://i.imgur.com/Die1Fm8.png" alt="Solaria" style="top: 1160px; left: 3300px;" width="100px" height="200px">
+            <img id="Solaria" src="https://i.imgur.com/kUGA3b9.png" alt="Northuria Area">
+            <img class="overlay2-img" src="https://i.imgur.com/lPWIouE.png" alt="Northuria" style="top: 1124px; left: 2105px;" width="100px" height="200px">
+            <img id="Northuria" src="https://i.imgur.com/R9zf2Rz.png" alt="Northuria Area">
+            <img class="overlay2-img" src="https://i.imgur.com/OWOlry0.png" alt="Redmont" style="top: 530px; left: 2615px;" width="100px" height="200px">
+            <img id="Redmont" src="https://i.imgur.com/jAS7G5p.png" alt="Redmont Area">
+            <img class="overlay2-img" src="https://i.imgur.com/SurCb76.png" alt="Mirandor" style="top: 560px; left: 3633px;" width="100px" height="200px">
+            <img id="Mirandor" src="https://i.imgur.com/nc0Tdjf.png" alt="Mirandor Area">
+            <img class="overlay2-img" src="https://i.imgur.com/LKgVfCJ.png" alt="Durnor" style="top: 445px; left: 3300px;" width="100px" height="200px">
+            <img id="Durnor" src="https://i.imgur.com/SbX7ntu.png" alt="Durnor Area">
+            <img class="overlay2-img" src="https://i.imgur.com/jw1xiFV.png" alt="Vindengard" style="top: 1360px; left: 1440px;" width="100px" height="200px">
+            <img id="Vindengard" src="https://i.imgur.com/oj5Qgqs.png" alt="Vindengard Area">
+            <img class="overlay2-img" src="https://i.imgur.com/KKeBwil.png" alt="Baraddur" style="top: 1265px; left: 2430px;" width="100px" height="200px">
+            <img id="Baraddur" src="https://i.imgur.com/oJAkrG2.png" alt="Baraddur Area">
+            <img class="overlay2-img" src="https://i.imgur.com/IRugSHY.png" alt="Ekrund" style="top: 420px; left: 1790px;" width="100px" height="200px">
+            <img id="Ekrund" src="https://i.imgur.com/wrf90fb.png" alt="Ekrund Area">
+            <img class="overlay2-img" src="https://i.imgur.com/OhGIXre.png" alt="Isengard" style="top: 770px; left: 1875px;" width="100px" height="200px">
+            <img id="Isengard" src="https://i.imgur.com/Giw0zFU.png" alt="Isengard Area">
+            <img id="Nuvem" src="https://i.imgur.com/5Hh47ig.png" alt="Nuvem">
+            <img id="Nuvens" src="https://i.imgur.com/5Hh47ig.png" alt="Nuvens">
+        </div>
+        
+</div>
+<div class="sidebar" id="sidebar1"> 
+<div class="sidebar-content">
+            <h2>Redmont</h2>
+            <p>Rei: Adalan Percival Orion<br>
+            População: 10.000<br>
+            Clima: Árido e seco<br>
+            ___________________<br>
+            <br>
+            O Reino de Redmont, situado no topo das majestosas Montanhas Carmesim, é o principal reino da era atual, liderando os reinos unificados na guerra. Redmont possui o maior exército, além de vastas reservas de ouro e territórios extensos, comandando e protegendo quatro reinos subordinados. Seus cavaleiros seguem o prestigiado Código da Tábula Rubra e são simbolizados pelo grande leão dourado que emerge das montanhas vermelhas, vestindo brilhantes armaduras carmesins.<br>
+<br>
+A mitologia de Redmont é monoteísta, centrada na adoração de Thalos, o deus da justiça. A cidade é rica em todos os aspectos, com uma economia robusta focada na extração do minério Scarlite, reconhecido como o segundo mais forte de todos os minérios. Redmont é, portanto, um bastião de poder, riqueza e tradição, destacando-se como um centro cultural e econômico na região. 
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar2"> 
+<div class="sidebar-content">
+    <h2>Solaria</h2>
+    <p>Rei: Gareth Kazan 6º<br>
+       População:5.000<br>
+       Clima: Quente, seco e tropical<br>
+       ___________________<br>
+       <br>
+       O Reino de Solaria, isolado na Ilha do Sol, enfrentava constantes ameaças do imponente Coração de Fogo, um vulcão que dominava o centro da ilha. Contudo, o reinado de Gareth II marcou uma mudança significativa. Ao patrocinar a Escola de Magos de Arcadia, permitiu que o protomago do fogo, Igris, ascendesse em poder. Em gratidão, Igris dominou o vulcão, transformando sua lava em uma bênção para a ilha. Assim, Solaria prosperou como uma potência em metalurgia, reverenciando o protomago como uma divindade.<br>
+       <br>
+Solaria se destaca como um reino equilibrado em território, finanças e poder militar. Seus cavaleiros, reconhecidos por suas imponentes armaduras negras, representam a força e a disciplina do reino. Para tornar-se um cavaleiro, é necessário enfrentar uma jornada desafiadora: escalar o vulcão com pesadas armaduras, símbolos de força e devoção. Esses cavaleiros, grandes em estatura e coração, são os guardiões incansáveis de Solaria, protegendo-o com lealdade e bravura.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar3"> 
+<div class="sidebar-content">
+    <h2>Aldoria</h2>
+    <p>Rainha: Elis Meloria<br>
+       População:3.000<br>
+       Clima: Subtropical e com chuvas torrenciais<br>
+       ___________________<br>
+       <br>
+       Aldoria é um reino sereno e pitoresco, situado ao sul das imponentes Montanhas Carmesim. Fazendo parte da unificação sob o domínio de Redmont, Aldoria é tanto protegido quanto coagido pela poderosa influência de seu aliado. A economia de Aldoria é sustentada pela produção de tapeçarias magníficas, que são conhecidas e apreciadas em todos os reinos pela sua beleza e artesanato incomparáveis. 
+       Todos outros aspectos de Aldoria são influenciados por Redmont.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar4"> 
+<div class="sidebar-content">
+            <h2>Galadorn</h2>
+            <p>Rei: Garibald Adorn<br>
+            População:3.500<br>
+            Clima:Frio e nevado<br>
+            ___________________<br>
+        <br>
+        O grande Dragão Negro, Galadorn, uma fera que ameaçava as montanhas de Elbrus, até um meio gigante
+        chamado Galio derrotá-lo e fundar o reino que homenageava a maior batalha de sua vida, anos depois
+        o trono foi assumido por seu melhor amigo humano Folk Adorn, que acolheu o filho de Galio, Legia
+        Agora o reino que era conhecido pelos melhores guerreiros do mundo, perdeu 60% de seu exército e é 
+        apenas uma sombra do que um dia já foi, sob a asa dos seus 7 deuses da resiliência e Guerra
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar5"> 
+<div class="sidebar-content">
+            <h2>Durnor</h2>
+            <p>Rei: Torin Dorovan<br>
+            População: 4.500<br>
+            Clima: Frio <br>
+            ___________________<br>
+        <br>
+        "Não há barreiras que resistam às muralhas imponentes de Durnor. Nesta cidade, a arte da construção é elevada a um patamar inigualável, e é nas mãos habilidosas dos seus construtores que reside a chave para sua maior fonte de riqueza. Enquanto outras terras constroem casas modestas, em Durnor erguem-se fortalezas intransponíveis e muralhas que desafiam até mesmo os mais intrépidos invasores."
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar6"> 
+<div class="sidebar-content">
+            <h2>Avalon</h2>
+            <p>Rei: Ulgird Avalon<br>
+            População: 3.000<br>
+            Clima: Rochoso<br>
+            ___________________<br>
+        <br>
+        "Em Avalon, o reino do rei Ulgird, a opulência reina suprema. Sob os céus abençoados por riquezas inigualáveis, muitos nobres tecem suas intrigas enquanto a riqueza flui como um rio inesgotável. Este é um reino onde a pompa e a prosperidade são inegáveis, onde um exército notável ergue-se como sentinela diante das muralhas dos Canyons Uivantes, prontos para proteger sua terra com fidelidade inabalável."
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar7"> 
+<div class="sidebar-content">
+            <h2>Arcadia</h2>
+            <p>Rei: Conselho das Chamas Eternar<br>
+            População: 3.500<br>
+            Clima: A necesssidade do conselho<br>
+            ___________________<br>
+        <br>
+        Arcadia é reconhecida em todos os reinos como a capital da magia, abrigando a prestigiosa Academia Arcana Evigaske, um bastião de conhecimento arcano onde aspirantes a feiticeiros de todas as partes buscam aprimorar suas habilidades. Neste reino, a magia permeia cada aspecto da vida cotidiana, moldando tanto a sociedade quanto as leis que a regem.<br>
+
+Diferente de outros reinos, Arcadia não é governada por um rei, mas sim por um conselho de cinco magos proeminentes,chamdos de protomagos, cujo poder e sabedoria são inquestionáveis. Eles são os guardiões dos antigos segredos mágicos, e é por meio de sua orientação que as questões mais importantes são decididas. Esses magos são firmes crentes nas constelações e na magia que flui através delas, usando suas interpretações astrológicas para guiar os destinos de Arcadia.<br>
+
+Localizada estrategicamente às margens do Lago Crepitar, as águas místicas deste lago servem como um ponto focal para a energia mágica que permeia toda a região. Os habitantes de Arcadia acreditam que as águas do lago são abençoadas, e muitos rituais mágicos são realizados em suas margens, em busca de sabedoria e poder.<br>
+
+Neste reino, a magia não é apenas uma habilidade a ser dominada, mas sim uma filosofia de vida, uma crença profunda no poder das artes arcanas e na harmonia que podem trazer ao mundo. Em Arcadia, a magia é a própria essência da existência, moldando o curso da história e guiando o destino de todos os que habitam essa terra encantada.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar8"> 
+<div class="sidebar-content">
+            <h2>Mirandor</h2>
+            <p>Rei: Jones Viktorino Mirandor 3º<br>
+            População: 4.000<br>
+            Clima: Temperado<br>
+            ___________________<br>
+        <br>
+        Reino de Mirandor, governado pelo rei Mirandor 3º, um grande cavaleiro que acumulou riqueza e influência suficientes para estabelecer seu próprio reino, composto por dois vilarejos próximos. Mirandor optou por não se submeter à unificação sob o comando de Redmont, preferindo trilhar seu próprio caminho. O reino tem prosperado através de acordos comerciais com Solaria e enfrenta disputas territoriais com Durnor pela cobiçada Floresta Aveloria. O símbolo de Mirandor é a fênix, representando o renascimento e a resiliência do reino.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar9"> 
+<div class="sidebar-content">
+            <h2>Northuria</h2>
+            <p>Rei: Soren Nefertari<br>
+            População: 3.500<br>
+            Clima: Temperado e Ventoso<br>
+            ___________________<br>
+        <br>
+        O reino humano mais isolado, acessível apenas através da imponente Ponte de Northuria, o que torna a cidade uma fortaleza natural. Este refúgio acolhe refugiados de guerra, e sua economia é autossustentável, girando internamente. Os habitantes de Northuria são firmes crentes nas constelações de Arcadia, que guiam suas vidas e decisões.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar10"> 
+<div class="sidebar-content">
+            <h2>Lothirion</h2>
+            <p>Rei: Thalindir Lorian<br>
+            População: 1000<br>
+            Clima: Tropical<br>
+            ___________________<br>
+        <br>
+        No coração da floresta mágica de Florelia, reside o reino escondido Lothirion, um refúgio ancestral para os elfos, onde a majestosa Árvore do Mundo, Seraphin, ergue-se imponente. Este local sagrado serve como base para que os elfos se reúnam e organizem suas vidas, em profundo respeito às antigas tradições élficas. <br>
+
+A cada década, uma cerimônia de checagem é realizada para garantir o bem-estar de todos os elfos, fortalecendo os laços da comunidade e reafirmando seu compromisso com a harmonia e a paz. Além disso, o reino abriga o Jardim das Esculturas, um lugar sagrado onde os elfos prestam homenagem aos seus antepassados, celebrando suas vidas e legados. <br>
+
+Os elfos de Florelia são devotos das Deusas da Vida e da Morte, venerando-as como guardiãs de seu mundo e guias de suas jornadas espirituais. Neste reino encantado, a magia da natureza e a sabedoria dos elfos se entrelaçam, criando um santuário de beleza e harmonia onde a vida floresce em toda a sua plenitude.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar11"> 
+<div class="sidebar-content">
+            <h2>Khazum</h2>
+            <p>Rei: Thorn<br>
+            População: 5.000<br>
+            Clima: -----<br>
+            ___________________<br>
+        <br>
+        O primeiro reino anão a se unir na grande unificação foi estabelecido dentro da imponente Montanha de Redmont. Conhecidos como os principais escavadores de minérios, seus habitantes são mestres na arte da mineração e metalurgia. Sob a liderança de Thorn, o reino floresceu, extraindo riquezas inigualáveis das profundezas da montanha e fortalecendo sua posição como um pilar econômico e bélico crucial para a unificação.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar12"> 
+<div class="sidebar-content">
+            <h2>Zufbar</h2>
+            <p>Rei: Azaram<br>
+            População: 10.000<br>
+            Clima: ----<br>
+            ___________________<br>
+        <br>
+        O reino anão, oculto nas profundezas da terra, é um dos segredos mais bem guardados do mundo. Pouquíssimas pessoas sabem como acessar esse reino subterrâneo, um conhecimento reservado apenas a alguns reis escolhidos. Liderado pelo sábio e poderoso Azaram, este reino misterioso prospera longe dos olhos curiosos, protegido por sua localização secreta e pela habilidade de seus habitantes em dominar as artes da mineração e da metalurgia.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar13"> 
+<div class="sidebar-content">
+            <h2>Ekrund</h2>
+            <p>Rei: Krundel<br>
+            População: 5.000<br>
+            Clima: Nevado e frio<br>
+            ___________________<br>
+        <br>
+        O reino anão, conhecido como o Palácio de Ouro, é uma maravilha reluzente situada no topo de uma montanha nevada. Cada estrutura, desde as grandiosas salas até os menores detalhes arquitetônicos, é meticulosamente forjada em ouro. Este reino deslumbrante é liderado por Krundel, cujo governo reflete a riqueza e a opulência de sua terra. O brilho do Palácio de Ouro é visível a quilômetros de distância, destacando-se como um símbolo de poder e prosperidade em meio à paisagem gelada.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar14"> 
+<div class="sidebar-content">
+            <h2>Baraddur</h2>
+            <p>Rei: Korog<br>
+            População: 3.500<br>
+            Clima: Ameno e temperado<br>
+            ___________________<br>
+        <br>
+        O único reino orc que se recusou a se aliar aos onis é liderado pelo corajoso rei Korog. Repudiando as criaturas do abismo, Korog optou por confiar nos mortais, guiado por um profundo desprezo pelas abominações infernais. Inspirado pela determinação e integridade de seu rei, todo o seu povo seguiu essa decisão com fervor. Este reino destemido está localizado nas imponentes Planícies Sangrentas, uma terra marcada pela bravura e resiliência de seus habitantes.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar15"> 
+<div class="sidebar-content">
+            <h2>Isengard</h2>
+            <p>Rei: Grishnákh<br>
+            População: 3.500<br>
+            Clima: úmido e pantanoso<br>
+            ___________________<br>
+        <br>
+        O reino dos Orcs Cinzentos, principais aliados dos onis, é comandado pelo temível Grishnákh. Conhecidos por seus ataques surpresa e emboscadas mortais, eles espalham terror por onde passam. Em suas bandeiras, penduram as caveiras dos heróis caídos dos reinos, um símbolo sinistro de sua brutalidade e conquista. Este reino tenebroso está situado no pantanoso território de Skull, uma região sombria que reflete a ferocidade e a crueldade de seus habitantes.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar16"> 
+<div class="sidebar-content">
+            <h2>Vindengard</h2>
+            <p>Rei: Hrungnir<br>
+            População: 4.000<br>
+            Clima: Temperado<br>
+            ___________________<br>
+        <br>
+        O reino dos gigantes, comandado por Hrungnir, o mais poderoso de todos, decidiu aliar-se aos mortais em uma aliança estratégica. Situado nas vastas Planícies Distantes, este reino de colossos é conhecido tanto por sua força esmagadora quanto por sua lealdade. Sob a liderança de Hrungnir, os gigantes trabalham ao lado dos mortais, combinando sua força bruta com a engenhosidade humana para criar uma sociedade resiliente e formidável.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar17"> 
+<div class="sidebar-content">
+            <h2>Sutengurr</h2>
+            <p>Rei: Hrungnir<br>
+            População: 3.000<br>
+            Clima: Montanhoso e frio<br>
+            ___________________<br>
+        <br>
+        Os gigantes remanescentes na Montanha Real foram unificados sob a liderança de Vindergard e agora são comandados pelo rei Hrungnir. Estes poderosos seres, antes dispersos, encontram-se reunidos sob um governo forte e centralizado. Hrungnir, o mais forte de todos os gigantes, guia seu povo com sabedoria e força, consolidando sua posição e preparando-os para os desafios futuros. A Montanha Real, agora revitalizada, tornou-se um bastião de poder e resiliência, simbolizando a renovada união dos gigantes.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar18"> 
+<div class="sidebar-content">
+            <h2>O Abismo</h2>
+            <p>Rei: ???<br>
+            População: ???<br>
+            Clima: Quente e frio<br>
+            ___________________<br>
+        <br>
+        O Abismo, uma vasta cratera nos confins do mundo, foi o epicentro de uma grande guerra e lar dos Onis. Dentro da cratera, existia o quase indestrutível reino dos Onis, que hoje em dia ainda abriga alguns deles. No entanto, Redmont agora busca conquistar esse território de natureza desolada e ruínas esquecidas.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar19"> 
+<div class="sidebar-content">
+            <h2> Trono de Hrokarr</h2>
+            <p>Hrokarr, autoproclamado rei dos gigantes, destacou-se em um mundo onde os gigantes normalmente alcançam apenas 8 metros de altura, superando todos com impressionantes 20 metros. Em sua homenagem, foi construído um trono no alto das montanhas, aguardando seu próximo herdeiro digno <br>
+                <br>
+                Foi tal objeto que causou diversas guerras e conflitos entre as duas raças de gigantes, sem perceberem que foram tais guerras que invalidavam ambos para o trono do gigante que unificou os povos.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar20"> 
+<div class="sidebar-content">
+            <h2>Torre Abysmorak</h2>
+            <p>Nos confins do mundo, além das montanhas mais altas, ergue-se a imponente Torre de Abismorath. Esta torre, outrora o coração do comando dos Onis, era um símbolo de poder e mistério. Os Onis, criaturas de força e crueldade incomparáveis, governavam o Abismo de dentro desta estrutura colossal, protegida por suas magias antigas e impenetráveis.<br>
+                <br>
+                História<br>
+                Milhares de anos atrás, quando o Abismo ainda fervilhava com a presença dos Onis, Abismorath era o centro estratégico das suas operações. A torre, construída com pedras negras e obsidiana, se erguia ameaçadoramente contra o céu escuro, sua silhueta visível de todas as partes do reino. Era dali que os líderes Onis, comandados pelo implacável general Kurosh, orquestravam suas campanhas de terror e domínio.<br>
+                <br>
+                Segredos e Mitos<br>
+                Diz-se que a Torre de Abismorath guarda inúmeros segredos. Reza a lenda que nos níveis mais profundos da torre, escondem-se tomos antigos contendo feitiços capazes de controlar as sombras e abrir portais para outras dimensões. Corredores labirínticos e salas ocultas abrigam artefatos de poder inimaginável, protegidos por armadilhas letais e guardiões espectrais.<br>
+                Os contos falam de um salão proibido, onde um cristal sombrio, conhecido como o Coração do Abismo, pulsa com uma energia sinistra. Acredita-se que este cristal seja a fonte da imortalidade dos Onis e o motivo de sua resistência quase indestrutível. Muitos que buscaram esse tesouro nunca mais foram vistos, perdendo-se nas trevas sem fim da torre.<br>
+                <br>
+                Presente<br>
+                Hoje, a Torre de Abismorath está em ruínas, uma relíquia de um tempo esquecido. No entanto, sua presença ainda é sentida, uma sombra constante no horizonte. Redmont, um reino emergente, está decidido a conquistar este território desolado. Exploradores e aventureiros são enviados regularmente para desenterrar os segredos da torre e reivindicar seu poder.<br>
+                Alguns poucos Onis ainda habitam as profundezas do Abismo, protegendo o que restou de seu antigo domínio. A batalha por Abismorath promete ser longa e árdua, com Redmont enfrentando não apenas os remanescentes dos Onis, mas também os muitos perigos e enigmas que a torre guarda.<br>
+                <br>
+                Legado<br>
+                A Torre de Abismorath continua a ser um lugar de lendas, um testamento ao poder e à ambição dos Onis. Seu futuro é incerto, mas aqueles que ousam desafiar suas trevas podem encontrar um poder além da compreensão – ou sucumbir à maldição que ainda vigora entre suas paredes frias e sombrias.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar21"> 
+<div class="sidebar-content">
+            <h2>Cripta de Cristal</h2>
+            <p>Ao norte de Redmont, estende-se a Tundra Glacial, um deserto de gelo e neve implacável. Nas bordas dessa tundra, ficam as ruínas do antigo reino humano de Thalassia. Thalassia, um reino uma vez próspero, caiu em desgraça após rituais arcanos mal sucedidos que desencadearam uma catástrofe destrutiva, transformando suas terras férteis em uma tundra gélida. Hoje, as ruínas de Thalassia escondem segredos antigos e artefatos poderosos, atraindo aventureiros e exploradores corajosos, mesmo diante dos perigos que a Tundra Glacial apresenta.<br>
+                <br>
+                Nas profundezas dessa desolação congelada, há uma visão ainda mais impressionante: a Gélida Cripta de Cristal. Esta caverna de gelo, adornada com cristais brilhantes que refletem a luz de forma deslumbrante, é um mistério congelado no coração da tundra. Os corredores labirínticos da cripta escondem segredos antigos e perigos desconhecidos, desafiando até os exploradores mais destemidos a enfrentar suas profundezas gélidas em busca de tesouros perdidos e conhecimento arcano.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar22"> 
+<div class="sidebar-content">
+            <h2>Hearthforge</h2>
+            <p>Na vasta extensão do reino de Solária, ergue-se a lendária Forja do Sol Vulcaniano. Localizada nas entranhas de uma montanha vulcânica, esta forja é uma maravilha de engenharia e habilidade artesanal. Utilizando a lava incandescente do vulcão como sua fonte de calor, os habilidosos ferreiros de Solária dominaram a arte da metalurgia de uma forma incomparável.<br>
+                <br>
+                A Forja do Sol Vulcaniano é reconhecida como a melhor do mundo, produzindo armas e armaduras de qualidade superior, imbuidas com o calor e a energia do próprio sol. Os artefatos forjados aqui são cobiçados por guerreiros e aventureiros de todos os reinos, buscando a força e a proteção que somente o aço solar de Solária pode proporcionar.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar23"> 
+<div class="sidebar-content">
+            <h2>Vulcão Ignárium</h2>
+            <p>No coração do reino de Solária, o Vulcão de Ignárium irrompe com sua imponente presença. Líderando sua magia única, o protomago Igris comandava as chamas e a lava deste vulcão, transformando-as em rios ardentes que fluíam pelo reino. Esses fluxos não apenas proporcionavam calor e energia, mas também serviam como defesas e armas para a proteção de Solária. No entanto, desde a partida de Igris, uma vez por mês, Solária é envolvida por uma chuva de cinzas vulcânicas, uma lembrança sombria do poder e da ira do Vulcão de Ignárium. A ausência do protomago trouxe a responsabilidade de lidar com essas tempestades aos sábios e magos de Solária, que trabalham incansavelmente para proteger a população dos perigos que essas chuvas trazem consigo. Apesar disso, a memória de Igris ainda é honrada em Solária, enquanto o reino continua a enfrentar os desafios que o Vulcão de Ignárium apresenta.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar24"> 
+<div class="sidebar-content">
+            <h2>Ponte de Northuria</h2>
+            <p>A Ponte de Northuria ergue-se imponente, uma estrutura colossal que se estende por quilômetros, isolando o reino de Northuria do restante do mundo. Uma vez uma obra-prima da engenharia, agora é um monumento à separação e ao conflito.<br>
+
+                Durante os períodos de guerra, a Ponte de Northuria foi o epicentro de batalhas sangrentas, onde exércitos lutaram pelo controle estratégico da passagem. Seus arcos altos e torres de vigia serviram como sentinelas silenciosas enquanto as terras ao redor ecoavam com os clamores da guerra.<br>
+                
+                Hoje, a ponte permanece em silêncio, mas sua presença maciça continua a moldar a paisagem e o destino de Northuria. Cruzar para o reino vizinho é uma jornada perigosa e demorada, exigindo três dias de viagem a cavalo através de terrenos acidentados e caminhos tortuosos. Para os poucos que se aventuram além da Ponte de Northuria, os riscos são grandes, mas as recompensas podem ser ainda maiores.<br>
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar25"> 
+<div class="sidebar-content">
+            <h2>Mina de Khazum</h2>
+            <p>Nos corações das Montanhas de Redmont, a Mina Anã de Khazum brilha como uma joia na escuridão. Comandada pelo intrépido anão Thorn, esta mina é famosa por seu minério raro, o Scarlite. Extraído das profundezas da montanha, o Scarlite é uma fonte vital de riqueza e poder para Redmont, impulsionando sua economia e fortalecendo suas defesas. Sob a liderança de Thorn, os mineiros anões enfrentam os perigos das profundezas com coragem e determinação, garantindo assim o futuro próspero de seu reino.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar26"> 
+<div class="sidebar-content">
+            <h2>Picos Dracônicos</h2>
+            <p>Nas profundezas do oceano perigoso, isoladas e envoltas por rochas escarpadas, erguem-se os Picos do Dracônio. Estas elevações, que parecem desafiar os céus com suas pontas afiadas, são o lar ancestral dos dragões. Em meio aos redemoinhos tempestuosos e às águas traiçoeiras, os Picos do Dracônio permanecem como um bastião impenetrável, onde os dragões reinam supremos sobre sua terra de fogo e cinzas. Poucos ousam se aventurar por essas águas turbulentas, temendo a fúria dos dragões que guardam seu território com ferocidade inigualável.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar27"> 
+<div class="sidebar-content">
+            <h2>Seraphir</h2>
+            <p>No coração da Floresta Florelia, ergue-se a Árvore do Mundo, Seraphir. Esta árvore imponente é o centro espiritual dos elfos, guardando os segredos antigos e alimentando a vida exuberante ao seu redor. Para os elfos, Seraphir é mais do que uma árvore; é um símbolo de sua conexão com a natureza e com o mundo ao seu redor, sustentando a harmonia e a magia da floresta.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar28"> 
+<div class="sidebar-content">
+            <h2>Forte Ignarium</h2>
+            <p>Quando o Vulcão de Ignárium ameaça perder o controle, o Forte de Solária se ergue como um bastião inabalável. Feito de pedras negras e torres imponentes, este forte é a última linha de defesa do reino. Com soldados vigilantes e arqueiros preparados, o forte protege Solária contra as ameaças do vulcão descontrolado, garantindo a segurança e a sobrevivência do reino.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar29"> 
+<div class="sidebar-content">
+            <h2>Torre de Northuria</h2>
+            <p>A Torre de Northuria, imponente e segura, erguia-se como um refúgio para os refugiados de guerra. Situada nos confins do reino, seus muros de pedra sólida ofereciam proteção e abrigo temporário aos deslocados, fornecendo comida, água e cuidados médicos.<br>
+
+                Mesmo em meio ao caos da guerra, a torre simbolizava esperança e compaixão. Pessoas de todas as origens se reuniam ali, compartilhando histórias e encontrando consolo. A Torre de Northuria, mais que um abrigo, era um farol de humanidade e solidariedade, iluminando o caminho para um futuro melhor.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar30"> 
+<div class="sidebar-content">
+            <h2>???</h2>
+            <p>Escondida nas profundezas da terra, a Masmorra Esquecida é um labirinto sombrio e misterioso. Abandonada há séculos, suas paredes de pedra são cobertas por musgo e lianas, e um silêncio inquietante permeia o ar.<br>
+                <br>
+                Diz-se que a masmorra guarda segredos antigos e tesouros inestimáveis, mas também perigos mortais. Criaturas sombrias e armadilhas traiçoeiras aguardam os poucos corajosos que se aventuram em seus corredores. A história da Masmorra Esquecida está envolta em mistério, mas aqueles que conhecem suas lendas sabem que entrar lá é arriscar-se a nunca mais retornar.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar31"> 
+<div class="sidebar-content">
+            <h2>Jotunheim</h2>
+            <p>O Forte de Jotunheim, erguido nas Planícies Gigantes, é um bastião sagrado para os gigantes. Suas muralhas imponentes, feitas de pedras gigantescas, parecem tocar os céus, simbolizando a ligação direta dos gigantes com seus deuses ancestrais.<br>
+                <br>
+                Dentro deste forte, os gigantes realizam rituais antigos e cerimônias sagradas, buscando a orientação e as bênçãos divinas. Altares de pedra, esculpidos com runas antigas, adornam os salões, onde os sacerdotes gigantes invocam os poderes dos céus e da terra.<br>
+                <br>
+                O Forte de Jotunheim não é apenas uma fortaleza de defesa, mas um local de profunda reverência e conexão espiritual. Aqui, os gigantes renovam sua força e fé, mantendo viva a ligação com seus deuses e garantindo a proteção e a prosperidade de seu povo.<br>
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar32"> 
+<div class="sidebar-content">
+            <h2>Vila Frosthein</h2>
+            <p>Vassalo: Vikael<br>
+            População: 100<br>
+            Clima: Nevado e frio<br>
+            ___________________<br>
+        <br>
+        Na vastidão gelada de Galadorn, a Vila de Frostheim floresce em meio à neve e ao gelo. Cercada por montanhas nevadas e florestas de pinheiros, suas casas de pedra com telhados inclinados resistem aos rigorosos invernos. Ruas de paralelepípedos cobertas de neve conduzem os aldeões em suas rotinas diárias.<br>
+        <br>
+Os campos ao redor, adaptados ao frio, produzem colheitas que sustentam a comunidade. Na praça central, uma fonte esculpida em gelo, com figuras lendárias, é o ponto de encontro para festivais e celebrações, preservando a herança cultural de Galadorn.<br>
+<br>
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar33"> 
+<div class="sidebar-content">
+            <h2>Vila Aurorahail</h2>
+            <p>Vassalo: Neil Hall<br>
+            População: 200<br>
+            Clima: Frio e nevado<br>
+            ___________________<br>
+        <br>
+        Ao norte de Galadorn, a Vila de Aurorahail se ergue entre montanhas nevadas. Conhecida por sua resistência ao clima rigoroso, Aurorahail é o berço do herói Legia. As casas de pedra e madeira robusta têm telhados inclinados para suportar a neve pesada. Ruas estreitas cobertas de neve guiam os aldeões em suas rotinas, enquanto lareiras aquecem os lares. Na praça central, uma modesta estátua de Legia inspira orgulho e celebrações anuais, mantendo viva a coragem e determinação do herói. 
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar34"> 
+<div class="sidebar-content">
+            <h2>Vila Havencliff</h2>
+            <p>Vassalo: Lerói Birsk<br>
+            População: 100 <br>
+            Clima: Frio e nevado<br>
+            ___________________<br>
+        <br>
+        Localizada nas fronteiras de Galadorn, Havencliff é uma vila pitoresca aninhada entre imponentes penhascos e vastas florestas. Suas casas de madeira resistente e telhados inclinados se agarram às encostas rochosas, enquanto ruas estreitas e sinuosas serpenteiam entre elas. No centro da vila, uma praça acolhedora é adornada por uma fonte antiga, onde os aldeões se reúnem para compartilhar histórias e celebrar a vida em meio à beleza natural que os rodeia. Havencliff é um refúgio de tranquilidade e solidariedade, onde os moradores se unem em harmonia para enfrentar os desafios das fronteiras de Galadorn.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar35"> 
+<div class="sidebar-content">
+            <h2>Vila Estrelúria</h2>
+            <p>Vassalo: -----<br>
+            População: 250<br>
+            Clima: A desejo de Arcádia<br>
+            ___________________<br>
+        <br>
+        Na borda de uma colina íngreme, protegida por um sigilo mágico, ergue-se a enigmática vila de Estrelúria. Aninhada entre os pinheiros e os sussurros do vento, esta vila é um refúgio de segredos e mistérios. Suas casas de pedra se fundem com as rochas da colina, enquanto ruas sinuosas serpenteiam ao redor, levando os passos dos seus habitantes em um dançar silencioso pela encosta. O ar de Estrelúria é impregnado de uma aura mágica, uma sensação de que cada sombra esconde segredos antigos, e cada brisa carrega murmúrios de encantamentos esquecidos.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar36"> 
+<div class="sidebar-content">
+            <h2>Vila Marfin</h2>
+            <p>Vassalo: Frijorn<br>
+            População: 100<br>
+            Clima: A desejo de Arcadia<br>
+            ___________________<br>
+        <br>
+        À beira do mágico Lago Crepitar repousa a serena vila de Marfim. Suas casas alinham a margem, refletindo-se nas águas tranquilas. Os moradores, em harmonia com o lago, pescam peixes reluzentes e cultivam plantações exuberantes em suas margens férteis. Marfim é um refúgio de paz e beleza, onde a magia do lago se entrelaça com a vida cotidiana dos habitantes.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar37"> 
+<div class="sidebar-content">
+            <h2>Vila Fractor</h2>
+            <p>Vassalo: Marilon Knock<br>
+            População: 250<br>
+            Clima: Árido e Seco<br>
+            ___________________<br>
+        <br>
+        Às margens do Pantano Skull dos Orcs Cinzentos, no território de Redmont, está a vila remota de Fractor. Lá, os moradores vivem sob constante vigilância contra as ameaças dos orcs e das criaturas do pantano. Foi neste ambiente hostil que Thalon, o lendário Protomago da Terra, moldou os canyons áridos e desafiadores que circundam o pantano para proteger Avalon. Jurando defender sua terra natal, Thalon tem sido uma poderosa força na resistência contra as ameaças do pantano. Fractor é uma vila marcada pela coragem e determinação, onde os habitantes vivem sob a sombra do perigo, mas também sob a proteção do Protomago da Terra, cuja bravura inspira esperança em meio à escuridão.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar38"> 
+<div class="sidebar-content">
+            <h2>Vila Montanhares</h2>
+            <p>Vassalo: General Hyuma<br>
+            População: 200<br>
+            Clima: Seco, árido e ventanoso<br>
+            ___________________<br>
+        <br>
+        No sopé das imponentes Montanhas Vermelhas, situada estrategicamente no meio do caminho para Redmont, encontra-se a acolhedora vila de Montanhares. Esta pitoresca vila serve como um oásis para viajantes exaustos que buscam descanso antes de continuar sua jornada até Redmont. Suas casas de pedra e madeira, com telhados inclinados, proporcionam abrigo e conforto aos viajantes cansados, enquanto as tavernas locais oferecem comida quente e hospitalidade calorosa. Montanhares é um ponto de encontro onde histórias são trocadas e laços são forjados entre viajantes de todos os lugares, tornando-se um refúgio essencial na jornada até Redmont.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar39"> 
+<div class="sidebar-content">
+            <h2>Vila Penúria</h2>
+            <p>Vassalo: ----<br>
+            População: ???<br>
+            Clima: Frio e sombrio<br>
+            ___________________<br>
+        <br>
+        No desolado terreno que um dia abrigou o grandioso Reino de Thalassia, agora em ruínas, encontra-se a vila escassa de Penúria. Esquecida por Redmont, apenas alguns poucos cidadãos fiéis persistem em um ambiente hostil, onde a magia corrompida ainda ecoa entre as ruínas. Para esses sobreviventes, Penúria é um testemunho sombrio da fragilidade da grandeza e um lembrete trágico dos perigos da magia descontrolada.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar40"> 
+<div class="sidebar-content">
+            <h2>Vila Lademanta</h2>
+            <p>Vassalo: Iris Finnegan<br>
+            População: 75<br>
+            Clima: Subtropical<br>
+            ___________________<br>
+        <br>
+        Na encosta de um morro no território de Redmont fica a vila de Lademanta, pertencente a Aldoria. Conhecida como o coração da indústria têxtil da região, Lademanta fornece os finos tecidos que são a marca registrada de Aldoria. Aqui, casas coloridas se misturam com oficinas de tecelagem, onde os moradores trabalham incansavelmente para produzir os mais delicados tecidos, orgulhosos de seu papel vital na economia do reino.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar41"> 
+<div class="sidebar-content">
+            <h2>Vila Sombriana</h2>
+            <p>Vassalo: ???<br>
+            População: ???<br>
+            Clima: ???<br>
+            ___________________<br>
+        <br>
+        No coração da sombria Floresta Sangrenta, dentro do território de Redmont, fica a vila isolada de Sombriana. Cercada por árvores retorcidas e densa vegetação, esta vila é um oásis de vida em meio à escuridão. Os moradores de Sombriana vivem em constante vigilância, pois a floresta é conhecida por sua natureza hostil e segredos sombrios.
+
+Nas ruas estreitas e sinuosas de Sombriana, as casas se misturam com a paisagem natural, e os habitantes aprenderam a coexistir com as criaturas misteriosas que habitam a floresta. Apesar dos desafios, os moradores de Sombriana são conhecidos por sua coragem e determinação, mantendo viva a esperança em meio à escuridão da Floresta Sangrenta.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar42"> 
+<div class="sidebar-content">
+            <h2>Vila Altmor</h2>
+            <p>Vassalo: ---<br>
+            População: 250<br>
+            Clima: Tropical <br>
+            ___________________<br>
+        <br>
+        Na encosta do Morro da Floresta Sangrenta, no território de Durnor, encontra-se a serena vila de Altmor. Apesar de sua proximidade com a floresta sombria, Altmor desfruta de uma atmosfera tranquila e pacífica, oferecendo um refúgio acolhedor para seus habitantes.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar43"> 
+<div class="sidebar-content">
+            <h2>Vila Wildmar</h2>
+            <p>Vassalo: ----<br>
+            População: 50<br>
+            Clima: Tropical<br>
+            ___________________<br>
+        <br>
+        À beira-mar, na encosta de Northuria, fica a vila de Wildmar. Dependendo inteiramente da pesca para sobreviver, seus habitantes enfrentam diariamente os desafios do oceano em busca de sustento. Apesar da vida isolada, a comunidade de Wildmar é unida pela sua resiliência e pelo espírito de colaboração.
+    </p>
+</div>
+</div>
+
+</div>
+<div class="sidebar" id="sidebar44"> 
+<div class="sidebar-content">
+            <h2>Vila Abissária</h2>
+            <p>Vassalo: Brook Orion<br>
+            População: 50<br>
+            Clima: ???<br>
+            ___________________<br>
+        <br>
+        Estrategicamente situada fora dos territórios conhecidos, embora oficialmente pertencente a Redmont, encontra-se a vila de Abissária. Sua localização é crucial para qualquer missão que envolva o domínio do Abismo, servindo como um ponto de partida ou base de operações para aqueles que se aventuram nos confins misteriosos e perigosos deste reino sombrio. Os habitantes de Abissária são poucos, mas corajosos, cientes da importância de sua vila na busca pelo controle do Abismo.
+    </p>
+</div>
+</div>
+    
+    <script>
+        let scale = 0.33; // Escala inicial de 33%
+const maxScale = 2; // Zoom in máximo
+const minScale = 0.38; // Zoom out máximo
+
+const content = document.getElementById('content');
+const additionalImage = document.getElementById('additionalImage');
+const zufbarImg = document.querySelector('img[alt="Zufbar"]');
+const overlay2Images = document.querySelectorAll('img.overlay2-img'); // Seleciona todas as imagens com a classe overlay2-img
+const nuvensImg = document.getElementById('Nuvens');
+
+zufbarImg.style.display = 'none'; // Inicialmente oculta a imagem Zufbar
+content.style.transform = `scale(${scale})`;
+
+window.addEventListener('wheel', function(event) {
+    if (event.deltaY < 0 && scale < maxScale) {
+        scale += 0.1;
+    } else if (event.deltaY > 0 && scale > minScale) {
+        scale -= 0.1;
+    }
+    content.style.transform = `scale(${scale})`;
+
+    // Verifica o zoom para a visibilidade de additionalImage
+    if (scale >= 0.7) { // 70% zoom in
+        additionalImage.style.display = 'none';
+    } else {
+        additionalImage.style.display = 'block';
+    }
+
+    // Verifica o zoom para a visibilidade da imagem Zufbar
+    if (scale >= 2) { // 200% zoom in
+        zufbarImg.style.display = 'block';
+    } else {
+        zufbarImg.style.display = 'none';
+    }
+
+    // Verifica o zoom para a visibilidade das imagens overlay2-img
+    overlay2Images.forEach(function(img) {
+        if (scale >= 0.7) { // 70% zoom in
+            img.style.display = 'none';
+        } else {
+            img.style.display = 'block';
+        }
+
+        // Check scale for Nuvens image visibility
+        if (scale >= 0.7) { // 70% zoom in
+                nuvensImg.style.display = 'none';
+            } else {
+                nuvensImg.style.display = 'block';
+            }
+    });
+});
+        // Função para alternar a visibilidade das barras laterais
+        function toggleSidebar(sidebarId) {
+            const sidebar = document.getElementById(sidebarId);
+            sidebar.classList.toggle('show');
+        }
+
+        // Adicionando eventos de clique para cada imagem
+        const toggleSidebar1 = document.getElementById('toggleSidebar1');
+        toggleSidebar1.addEventListener('click', function() {
+            toggleSidebar('sidebar1');
+            // Certificar-se de que as outras barras laterais estão ocultas
+            hideAllSidebars('sidebar1');
+        });
+
+        const toggleSidebar2 = document.getElementById('toggleSidebar2');
+        toggleSidebar2.addEventListener('click', function() {
+            toggleSidebar('sidebar2');
+            hideAllSidebars('sidebar2');
+        });
+
+        const toggleSidebar3 = document.getElementById('toggleSidebar3');
+        toggleSidebar3.addEventListener('click', function() {
+            toggleSidebar('sidebar3');
+            hideAllSidebars('sidebar3');
+        });
+
+        const toggleSidebar4 = document.getElementById('toggleSidebar4');
+        toggleSidebar4.addEventListener('click', function() {
+            toggleSidebar('sidebar4');
+            hideAllSidebars('sidebar4');
+        });
+
+        const toggleSidebar5 = document.getElementById('toggleSidebar5');
+        toggleSidebar5.addEventListener('click', function() {
+            toggleSidebar('sidebar5');
+            hideAllSidebars('sidebar5');
+        });
+
+        const toggleSidebar6 = document.getElementById('toggleSidebar6');
+        toggleSidebar6.addEventListener('click', function() {
+            toggleSidebar('sidebar6');
+            hideAllSidebars('sidebar6');
+        });
+
+        const toggleSidebar7 = document.getElementById('toggleSidebar7');
+        toggleSidebar7.addEventListener('click', function() {
+            toggleSidebar('sidebar7');
+            hideAllSidebars('sidebar7');
+        });
+
+        const toggleSidebar8 = document.getElementById('toggleSidebar8');
+        toggleSidebar8.addEventListener('click', function() {
+            toggleSidebar('sidebar8');
+            hideAllSidebars('sidebar8');
+        });
+
+        const toggleSidebar9 = document.getElementById('toggleSidebar9');
+        toggleSidebar9.addEventListener('click', function() {
+            toggleSidebar('sidebar9');
+            hideAllSidebars('sidebar9');
+        });
+
+        const toggleSidebar10 = document.getElementById('toggleSidebar10');
+        toggleSidebar10.addEventListener('click', function() {
+            toggleSidebar('sidebar10');
+            hideAllSidebars('sidebar10');
+        });
+
+        const toggleSidebar11 = document.getElementById('toggleSidebar11');
+        toggleSidebar11.addEventListener('click', function() {
+            toggleSidebar('sidebar11');
+            hideAllSidebars('sidebar11');
+        });
+
+        const toggleSidebar12 = document.getElementById('toggleSidebar12');
+        toggleSidebar12.addEventListener('click', function() {
+            toggleSidebar('sidebar12');
+            hideAllSidebars('sidebar12');
+        });
+
+        const toggleSidebar13 = document.getElementById('toggleSidebar13');
+        toggleSidebar13.addEventListener('click', function() {
+            toggleSidebar('sidebar13');
+            hideAllSidebars('sidebar13');
+        });
+
+        const toggleSidebar14 = document.getElementById('toggleSidebar14');
+        toggleSidebar14.addEventListener('click', function() {
+            toggleSidebar('sidebar14');
+            hideAllSidebars('sidebar14');
+        });
+
+        const toggleSidebar15 = document.getElementById('toggleSidebar15');
+        toggleSidebar15.addEventListener('click', function() {
+            toggleSidebar('sidebar15');
+            hideAllSidebars('sidebar15');
+        });
+
+        const toggleSidebar16 = document.getElementById('toggleSidebar16');
+        toggleSidebar16.addEventListener('click', function() {
+            toggleSidebar('sidebar16');
+            hideAllSidebars('sidebar16');
+        });
+
+        const toggleSidebar17 = document.getElementById('toggleSidebar17');
+        toggleSidebar17.addEventListener('click', function() {
+            toggleSidebar('sidebar17');
+            hideAllSidebars('sidebar17');
+        });
+
+        const toggleSidebar18 = document.getElementById('toggleSidebar18');
+        toggleSidebar18.addEventListener('click', function() {
+            toggleSidebar('sidebar18');
+            hideAllSidebars('sidebar18');
+        });
+
+        const toggleSidebar19 = document.getElementById('toggleSidebar19');
+        toggleSidebar19.addEventListener('click', function() {
+            toggleSidebar('sidebar19');
+            hideAllSidebars('sidebar19');
+        });
+
+        const toggleSidebar20 = document.getElementById('toggleSidebar20');
+        toggleSidebar20.addEventListener('click', function() {
+            toggleSidebar('sidebar20');
+            hideAllSidebars('sidebar20');
+        });
+
+        const toggleSidebar21 = document.getElementById('toggleSidebar21');
+        toggleSidebar21.addEventListener('click', function() {
+            toggleSidebar('sidebar21');
+            hideAllSidebars('sidebar21');
+        });
+
+        const toggleSidebar22 = document.getElementById('toggleSidebar22');
+        toggleSidebar22.addEventListener('click', function() {
+            toggleSidebar('sidebar22');
+            hideAllSidebars('sidebar22');
+        });
+
+        const toggleSidebar23 = document.getElementById('toggleSidebar23');
+        toggleSidebar23.addEventListener('click', function() {
+            toggleSidebar('sidebar23');
+            hideAllSidebars('sidebar23');
+        });
+
+        const toggleSidebar24 = document.getElementById('toggleSidebar24');
+        toggleSidebar24.addEventListener('click', function() {
+            toggleSidebar('sidebar24');
+            hideAllSidebars('sidebar24');
+        });
+
+        const toggleSidebar25 = document.getElementById('toggleSidebar25');
+        toggleSidebar25.addEventListener('click', function() {
+            toggleSidebar('sidebar25');
+            hideAllSidebars('sidebar25');
+        });
+
+        const toggleSidebar26 = document.getElementById('toggleSidebar26');
+        toggleSidebar26.addEventListener('click', function() {
+            toggleSidebar('sidebar26');
+            hideAllSidebars('sidebar26');
+        });
+
+        const toggleSidebar27 = document.getElementById('toggleSidebar27');
+        toggleSidebar27.addEventListener('click', function() {
+            toggleSidebar('sidebar27');
+            hideAllSidebars('sidebar27');
+        });
+
+        const toggleSidebar28 = document.getElementById('toggleSidebar28');
+        toggleSidebar28.addEventListener('click', function() {
+            toggleSidebar('sidebar28');
+            hideAllSidebars('sidebar28');
+        });
+
+        const toggleSidebar29 = document.getElementById('toggleSidebar29');
+        toggleSidebar29.addEventListener('click', function() {
+            toggleSidebar('sidebar29');
+            hideAllSidebars('sidebar29');
+        });
+
+        const toggleSidebar30 = document.getElementById('toggleSidebar30');
+        toggleSidebar30.addEventListener('click', function() {
+            toggleSidebar('sidebar30');
+            hideAllSidebars('sidebar30');
+        });
+
+        const toggleSidebar31 = document.getElementById('toggleSidebar31');
+        toggleSidebar31.addEventListener('click', function() {
+            toggleSidebar('sidebar31');
+            hideAllSidebars('sidebar31');
+        });
+        const toggleSidebar32 = document.getElementById('toggleSidebar32');
+        toggleSidebar32.addEventListener('click', function() {
+            toggleSidebar('sidebar32');
+            hideAllSidebars('sidebar32');
+        });
+        const toggleSidebar33 = document.getElementById('toggleSidebar33');
+        toggleSidebar33.addEventListener('click', function() {
+            toggleSidebar('sidebar33');
+            hideAllSidebars('sidebar33');
+        });
+        const toggleSidebar34 = document.getElementById('toggleSidebar34');
+        toggleSidebar34.addEventListener('click', function() {
+            toggleSidebar('sidebar34');
+            hideAllSidebars('sidebar34');
+        });
+        const toggleSidebar35 = document.getElementById('toggleSidebar35');
+        toggleSidebar35.addEventListener('click', function() {
+            toggleSidebar('sidebar35');
+            hideAllSidebars('sidebar35');
+        });
+        const toggleSidebar36 = document.getElementById('toggleSidebar36');
+        toggleSidebar36.addEventListener('click', function() {
+            toggleSidebar('sidebar36');
+            hideAllSidebars('sidebar36');
+        });
+        const toggleSidebar37 = document.getElementById('toggleSidebar37');
+        toggleSidebar37.addEventListener('click', function() {
+            toggleSidebar('sidebar37');
+            hideAllSidebars('sidebar37');
+        });
+        const toggleSidebar38 = document.getElementById('toggleSidebar38');
+        toggleSidebar38.addEventListener('click', function() {
+            toggleSidebar('sidebar38');
+            hideAllSidebars('sidebar38');
+        });
+        const toggleSidebar39 = document.getElementById('toggleSidebar39');
+        toggleSidebar39.addEventListener('click', function() {
+            toggleSidebar('sidebar39');
+            hideAllSidebars('sidebar39');
+        });
+        const toggleSidebar40 = document.getElementById('toggleSidebar40');
+        toggleSidebar40.addEventListener('click', function() {
+            toggleSidebar('sidebar40');
+            hideAllSidebars('sidebar40');
+        });
+        const toggleSidebar41 = document.getElementById('toggleSidebar41');
+        toggleSidebar41.addEventListener('click', function() {
+            toggleSidebar('sidebar41');
+            hideAllSidebars('sidebar41');
+        });
+        const toggleSidebar42 = document.getElementById('toggleSidebar42');
+        toggleSidebar42.addEventListener('click', function() {
+            toggleSidebar('sidebar42');
+            hideAllSidebars('sidebar42');
+        });
+        const toggleSidebar43 = document.getElementById('toggleSidebar43');
+        toggleSidebar43.addEventListener('click', function() {
+            toggleSidebar('sidebar43');
+            hideAllSidebars('sidebar43');
+        });
+        const toggleSidebar44 = document.getElementById('toggleSidebar44');
+        toggleSidebar44.addEventListener('click', function() {
+            toggleSidebar('sidebar44');
+            hideAllSidebars('sidebar44');
+        });
+
+        function hideAllSidebars(exceptId) {
+            const sidebars = document.querySelectorAll('.sidebar');
+            sidebars.forEach(sidebar => {
+                if (sidebar.id !== exceptId) {
+                    sidebar.classList.remove('show');
+                }
+            });
+        }
+
+        // Função de arrastar a página
+        const container = document.getElementById('container');
+        let isDragging = false;
+        let startX, startY, scrollLeft, scrollTop;
+
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - container.offsetLeft;
+            startY = e.pageY - container.offsetTop;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const y = e.pageY - container.offsetTop;
+            const walkX = (x - startX);
+            const walkY = (y - startY);
+            container.scrollLeft = scrollLeft - walkX;
+            container.scrollTop = scrollTop - walkY;
+        });
+
+        // Evitar comportamento padrão de arrastar imagem
+        const imgs = document.querySelectorAll('img');
+        imgs.forEach(img => {
+            img.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+            });
+        });
+        const overlayImgGaladorn = document.querySelector('.overlay2-img[src="https://i.imgur.com/r0Pq6jW.png"]');
+        const galadornArea = document.getElementById('Galadorn');
+
+    overlayImgGaladorn.addEventListener('mouseover', function() {
+    galadornArea.style.display = 'block';
+    });
+
+    overlayImgGaladorn.addEventListener('mouseout', function() {
+    galadornArea.style.display = 'none';
+        });
+        const overlayImgNorthuria = document.querySelector('.overlay2-img[src="https://i.imgur.com/lPWIouE.png"]');
+        const NorhuriaArea = document.getElementById('Northuria');
+
+    overlayImgNorthuria.addEventListener('mouseover', function() {
+    NorhuriaArea.style.display = 'block';
+    });
+
+    overlayImgNorthuria.addEventListener('mouseout', function() {
+    NorhuriaArea.style.display = 'none';
+        });
+        const overlayImgSolaria = document.querySelector('.overlay2-img[src="https://i.imgur.com/Die1Fm8.png"]');
+        const SolariaArea = document.getElementById('Solaria');
+
+    overlayImgSolaria.addEventListener('mouseover', function() {
+    SolariaArea.style.display = 'block';
+    });
+
+    overlayImgSolaria.addEventListener('mouseout', function() {
+    SolariaArea.style.display = 'none';
+        });
+        const overlayImgRedmont = document.querySelector('.overlay2-img[src="https://i.imgur.com/OWOlry0.png"]');
+        const RedmontArea = document.getElementById('Redmont');
+
+    overlayImgRedmont.addEventListener('mouseover', function() {
+    RedmontArea.style.display = 'block';
+    });
+
+    overlayImgRedmont.addEventListener('mouseout', function() {
+    RedmontArea.style.display = 'none';
+        });
+        const overlayImgMirandor = document.querySelector('.overlay2-img[src="https://i.imgur.com/SurCb76.png"]');
+        const MirandorArea = document.getElementById('Mirandor');
+
+    overlayImgMirandor.addEventListener('mouseover', function() {
+    MirandorArea.style.display = 'block';
+    });
+
+    overlayImgMirandor.addEventListener('mouseout', function() {
+    MirandorArea.style.display = 'none';
+    });
+        const overlayImgDurnor = document.querySelector('.overlay2-img[src="https://i.imgur.com/LKgVfCJ.png"]');
+        const DurnorArea = document.getElementById('Durnor');
+
+    overlayImgDurnor.addEventListener('mouseover', function() {
+    DurnorArea.style.display = 'block';
+    });
+
+    overlayImgDurnor.addEventListener('mouseout', function() {
+    DurnorArea.style.display = 'none';
+    });
+        const overlayImgVindengard = document.querySelector('.overlay2-img[src="https://i.imgur.com/jw1xiFV.png"]');
+        const VindengardArea = document.getElementById('Vindengard');
+
+    overlayImgVindengard.addEventListener('mouseover', function() {
+    VindengardArea.style.display = 'block';
+    });
+
+    overlayImgVindengard.addEventListener('mouseout', function() {
+    VindengardArea.style.display = 'none';
+    });
+        const overlayImgBaraddur = document.querySelector('.overlay2-img[src="https://i.imgur.com/KKeBwil.png"]');
+        const BaraddurArea = document.getElementById('Baraddur');
+
+    overlayImgBaraddur.addEventListener('mouseover', function() {
+    BaraddurArea.style.display = 'block';
+    });
+
+    overlayImgBaraddur.addEventListener('mouseout', function() {
+    BaraddurArea.style.display = 'none';
+    });
+        const overlayImgEkrund = document.querySelector('.overlay2-img[src="https://i.imgur.com/IRugSHY.png"]');
+        const EkrundArea = document.getElementById('Ekrund');
+
+    overlayImgEkrund.addEventListener('mouseover', function() {
+    EkrundArea.style.display = 'block';
+    });
+
+    overlayImgEkrund.addEventListener('mouseout', function() {
+    EkrundArea.style.display = 'none';
+    });
+    const overlayImgIsengard = document.querySelector('.overlay2-img[src="https://i.imgur.com/OhGIXre.png"]');
+        const IsengardArea = document.getElementById('Isengard');
+
+    overlayImgIsengard.addEventListener('mouseover', function() {
+    IsengardArea.style.display = 'block';
+    });
+
+    overlayImgIsengard.addEventListener('mouseout', function() {
+    IsengardArea.style.display = 'none';
+    });
+    </script>
+</body>
+</html>
